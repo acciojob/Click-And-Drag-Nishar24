@@ -36,46 +36,42 @@
 
 <script>
 //Your code goes here 
+ const container = document.getElementById('container');
+        const cubes = document.querySelectorAll('.cube');
 
-    const items = document.querySelectorAll('.item');
-    let draggedItem = null;
+        let draggedCube = null;
+        let offsetX, offsetY;
 
-    items.forEach(item => {
-      item.addEventListener('dragstart', (e) => {
-        draggedItem = e.target;
-        e.target.classList.add('dragging');
-      });
+        cubes.forEach(cube => {
+            cube.addEventListener('mousedown', (e) => {
+                draggedCube = e.target;
+                offsetX = e.clientX - draggedCube.offsetLeft;
+                offsetY = e.clientY - draggedCube.offsetTop;
+            });
+        });
 
-      item.addEventListener('dragend', (e) => {
-        e.target.classList.remove('dragging');
-        draggedItem = null;
-      });
+        document.addEventListener('mousemove', (e) => {
+            if (draggedCube) {
+                let newX = e.clientX - offsetX;
+                let newY = e.clientY - offsetY;
 
-      item.addEventListener('dragover', (e) => {
-        e.preventDefault();
-      });
+                // Boundary checks
+                const containerRect = container.getBoundingClientRect();
+                const cubeRect = draggedCube.getBoundingClientRect();
 
-      item.addEventListener('dragenter', (e) => {
-        e.preventDefault();
-      });
+                if (newX < 0) newX = 0;
+                if (newY < 0) newY = 0;
+                if (newX + cubeRect.width > containerRect.width) newX = containerRect.width - cubeRect.width;
+                if (newY + cubeRect.height > containerRect.height) newY = containerRect.height - cubeRect.height;
 
-      item.addEventListener('drop', (e) => {
-        if (draggedItem !== e.target) {
-          const itemsContainer = document.querySelector('.items');
-          const draggedIndex = Array.from(itemsContainer.children).indexOf(draggedItem);
-          const targetIndex = Array.from(itemsContainer.children).indexOf(e.target);
+                draggedCube.style.left = newX + 'px';
+                draggedCube.style.top = newY + 'px';
+            }
+        });
 
-          if (draggedIndex < targetIndex) {
-            itemsContainer.insertBefore(e.target, draggedItem);
-          } else {
-            itemsContainer.insertBefore(draggedItem, e.target);
-          }
-        }
-      });
-      item.setAttribute("draggable", "true");
-    });
-
-       
+        document.addEventListener('mouseup', () => {
+            draggedCube = null;
+        });
 </script>
 
   </body>
