@@ -37,40 +37,7 @@
 <script>
 //Your code goes here 
 
-        let selectedCube = null;
-        let offsetX, offsetY;
-        const container = document.getElementById("container");
-
-        document.querySelectorAll(".cube").forEach(cube => {
-            cube.addEventListener("mousedown", (e) => {
-                selectedCube = e.target;
-                offsetX = e.clientX - selectedCube.offsetLeft;
-                offsetY = e.clientY - selectedCube.offsetTop;
-                selectedCube.style.cursor = "grabbing";
-            });
-        });
-
-        document.addEventListener("mousemove", (e) => {
-            if (!selectedCube) return;
-            let newX = e.clientX - offsetX;
-            let newY = e.clientY - offsetY;
-            
-            let containerRect = container.getBoundingClientRect();
-            let cubeRect = selectedCube.getBoundingClientRect();
-            
-            if (newX < 0) newX = 0;
-            if (newY < 0) newY = 0;
-            if (newX + cubeRect.width > containerRect.width) newX = containerRect.width - cubeRect.width;
-            if (newY + cubeRect.height > containerRect.height) newY = containerRect.height - cubeRect.height;
-            
-            selectedCube.style.left = newX + "px";
-            selectedCube.style.top = newY + "px";
-        });
-
-        document.addEventListener("mouseup", () => {
-            if (selectedCube) selectedCube.style.cursor = "grab";
-            selectedCube = null;
-  
+       
 </script>
 
   </body>
